@@ -19,7 +19,5 @@ process.on('uncaughtException', (error) => {
  * Entry point.
  */
 (async () => {
-  // const argv = require('minimist')(process.argv.slice(2));
-  // const { command, ...restArgs } = argv;
   await parseEfoodAsync();
 })();

@@ -1,6 +1,8 @@
-const { translate, TRANSLATION_MAPPER } = require('./translations');
+const { isEmpty } = require('lodash');
+const { resolve, LITERALS_MAPPER } = require('./literals');
 const { getOrdersFromEfoodAsync } = require('./service');
-const { orderByHigherCost, getTotalExpenses, getOderDateByIndex } = require('./transformer');
+const { orderByHigherCost, getTotalExpenses } = require('./transformer');
+const { printStats } = require('./printer');
 
 /**
  * Prints various information on e-food stats.
@@ -8,29 +10,19 @@ const { orderByHigherCost, getTotalExpenses, getOderDateByIndex } = require('./t
  */
 const parseEfoodAsync = async () => {
   try {
-    const accountOrders = await getOrdersFromEfoodAsync();
+    const orders = await getOrdersFromEfoodAsync();
 
-    if (!accountOrders.length) {
-      console.log(translate(TRANSLATION_MAPPER.GENERIC_NO_ORDERS));
+    if (isEmpty(orders)) {
+      console.log(resolve(LITERALS_MAPPER.GENERIC_NO_ORDERS));
       process.exit(0);
+      return;
     }
 
-    const costArrayOrdered = orderByHigherCost(accountOrders);
-    const totalSum = getTotalExpenses(accountOrders);
-
-    console.log(costArrayOrdered);
-    console.log(translate(TRANSLATION_MAPPER.MESSAGES_TOTAL_SHOPS, costArrayOrdered.length));
-    console.log(translate(TRANSLATION_MAPPER.MESSAGES_TOTAL_ORDERS, accountOrders.length));
-    console.log(
-      translate(
-        TRANSLATION_MAPPER.MESSAGES_SPREE_PERIOD,
-        getOderDateByIndex(accountOrders, accountOrders.length - 1),
-        getOderDateByIndex(accountOrders, 0),
-      ),
-    );
-    console.log(translate(TRANSLATION_MAPPER.MESSAGES_AMOUNT_SPENT, totalSum));
+    const costs = orderByHigherCost(orders);
+    const sum = getTotalExpenses(orders);
+    printStats({ orders, costs, sum });
   } catch (error) {
-    console.error(translate(TRANSLATION_MAPPER.MESSAGES_ERRORS_GENERIC));
+    console.error(resolve(LITERALS_MAPPER.MESSAGES_ERRORS_GENERIC));
     console.error(error);
     process.exit(1);
   }

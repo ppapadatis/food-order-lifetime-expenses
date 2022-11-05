@@ -1,13 +1,13 @@
 {
   "name": "efood-lifetime-expenses",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple node script that calculates the total amount spent on e-food service.",
   "main": "index.js",
   "scripts": {
     "node:env": "node -r dotenv/config index.js",
     "calculate": "yarn node:env",
     "clean": "rm -rf node_modules",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "BABEL_ENV=test jest"
   },
   "author": "Panagiotis Papadatis <ppapadatis@gmail.com>",
   "license": "ISC",
@@ -21,10 +21,15 @@
     "lodash": "4.17.21"
   },
   "devDependencies": {
+    "@babel/core": "7.20.2",
+    "@babel/plugin-transform-modules-commonjs": "7.19.6",
+    "@babel/preset-env": "7.20.2",
+    "babel-jest": "29.2.2",
     "eslint": "8.2.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-jest": "27.1.4",
     "husky": "8.0.1",
     "jest": "27.4.7",
     "lint-staged": "13.0.3",

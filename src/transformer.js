@@ -10,7 +10,8 @@ const orderByHigherCost = (data) =>
     .groupBy('restaurant.id')
     .map((group) => ({
       id: get(group, '0.restaurant.id', 0),
-      name: get(group, '0.restaurant.name', ''),
+      restaurant: get(group, '0.restaurant.name', ''),
+      orders: group.length,
       price: sumBy(group, 'price'),
     }))
     .map((shop) => ({ ...shop, price: parseFloat(shop.price.toFixed(2)) }))
@@ -30,7 +31,7 @@ const getTotalExpenses = (data) => sumBy(data, 'price').toFixed(2);
  * @param {number} index
  * @returns {string}
  */
-const getOderDateByIndex = (data, index) => get(data, `${index}.submission_date`).split(' ')[0];
+const getOderDateByIndex = (data, index) => get(data, `${index}.submission_date`)?.split(' ')[0];
 
 module.exports = {
   orderByHigherCost,

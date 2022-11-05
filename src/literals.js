@@ -1,6 +1,6 @@
 const get = require('lodash/get');
 
-const TRANSLATION_DICTIONARY = Object.freeze({
+const DICTIONARY = Object.freeze({
   GENERIC: {
     NO_ORDERS: 'Your order history is empty!',
   },
@@ -15,7 +15,7 @@ const TRANSLATION_DICTIONARY = Object.freeze({
   },
 });
 
-const TRANSLATION_MAPPER = Object.freeze({
+const LITERALS_MAPPER = Object.freeze({
   GENERIC_NO_ORDERS: 'GENERIC.NO_ORDERS',
   MESSAGES_TOTAL_SHOPS: 'MESSAGES.TOTAL_SHOPS',
   MESSAGES_TOTAL_ORDERS: 'MESSAGES.TOTAL_ORDERS',
@@ -31,8 +31,8 @@ const TRANSLATION_MAPPER = Object.freeze({
  * @param {string|string[]} args
  * @returns {*}
  */
-const translate = (key, ...args) => {
-  const literal = get(TRANSLATION_DICTIONARY, key);
+const resolve = (key, ...args) => {
+  const literal = get(DICTIONARY, key);
   if (!literal) return key;
   if (!args.length) return literal;
 
@@ -40,6 +40,6 @@ const translate = (key, ...args) => {
 };
 
 module.exports = {
-  TRANSLATION_MAPPER,
-  translate,
+  LITERALS_MAPPER,
+  resolve,
 };
