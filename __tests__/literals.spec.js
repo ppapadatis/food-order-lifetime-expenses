@@ -3,7 +3,7 @@ const { resolve, LITERALS_MAPPER } = require('../src/literals');
 describe('literals.js', () => {
   describe('LITERALS_MAPPER', () => {
     test('should return an object with literals', () => {
-      expect(Object.keys(LITERALS_MAPPER).length).toEqual(6);
+      expect(Object.keys(LITERALS_MAPPER).length).toEqual(7);
     });
   });
 

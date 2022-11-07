@@ -1,4 +1,5 @@
-const { parseEfoodAsync } = require('./src/parser');
+const { parseFoodOrdersAsync } = require('./src/parser');
+const { FOOD_SERVICE } = require('./src/constants');
 
 /**
  * Subscribe to unhandledRejection event.
@@ -19,5 +20,13 @@ process.on('uncaughtException', (error) => {
  * Entry point.
  */
 (async () => {
-  await parseEfoodAsync();
+  const argv = require('minimist')(process.argv.slice(2));
+  const { service } = argv;
+
+  if (!Object.values(FOOD_SERVICE).includes(service)) {
+    process.exit(1);
+    return;
+  }
+
+  await parseFoodOrdersAsync(service);
 })();

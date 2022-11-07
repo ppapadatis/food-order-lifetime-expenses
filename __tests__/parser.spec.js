@@ -1,4 +1,4 @@
-const { parseEfoodAsync } = require('../src/parser');
+const { parseFoodOrdersAsync } = require('../src/parser');
 const { getOrdersFromEfoodAsync } = require('../src/service');
 
 jest.mock('../src/service.js', () => ({
@@ -16,7 +16,7 @@ describe('parser.js', () => {
     test('it should exit if orders is empty', async () => {
       getOrdersFromEfoodAsync.mockReturnValue([]);
       const exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
-      await parseEfoodAsync();
+      await parseFoodOrdersAsync('efood');
       expect(exitSpy).toHaveBeenCalledWith(0);
     });
   });

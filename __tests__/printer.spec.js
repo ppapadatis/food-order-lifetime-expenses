@@ -9,7 +9,7 @@ describe('printer.js', () => {
         sum: 1,
       };
       const log = jest.spyOn(console, 'log');
-      printStats(data);
+      printStats('efood', data);
       expect(log).toHaveBeenCalledTimes(5);
     });
   });

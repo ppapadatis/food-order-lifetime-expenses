@@ -1,11 +1,15 @@
 const { get } = require('lodash');
 
 const CONFIG = Object.freeze({
-  ACCESS_TOKEN: process.env.ACCESS_TOKEN,
+  EFOOD_ACCESS_TOKEN: process.env.EFOOD_ACCESS_TOKEN,
+  BOX_ACCESS_TOKEN: process.env.BOX_ACCESS_TOKEN,
+  WOLT_ACCESS_TOKEN: process.env.WOLT_ACCESS_TOKEN,
 });
 
 const CONFIG_MAPPER = Object.freeze({
-  ACCESS_TOKEN: 'ACCESS_TOKEN',
+  EFOOD_ACCESS_TOKEN: 'EFOOD_ACCESS_TOKEN',
+  BOX_ACCESS_TOKEN: 'BOX_ACCESS_TOKEN',
+  WOLT_ACCESS_TOKEN: 'WOLT_ACCESS_TOKEN',
 });
 
 /**

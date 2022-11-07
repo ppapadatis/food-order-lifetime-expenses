@@ -8,9 +8,10 @@ const DICTIONARY = Object.freeze({
     TOTAL_SHOPS: 'Number of shops: {0}.',
     TOTAL_ORDERS: 'Total amount of orders: {0}.',
     SPREE_PERIOD: 'Period from {0} to {1}.',
-    AMOUNT_SPENT: 'Total amount spent in e-food is €{0}.',
+    AMOUNT_SPENT: 'Total amount spent in {0} is €{1}.',
     ERRORS: {
       GENERIC: 'Oops! Something went wrong!',
+      INVALID_SERVICE: 'Wrong food service entered! Check again your input.',
     },
   },
 });
@@ -22,6 +23,7 @@ const LITERALS_MAPPER = Object.freeze({
   MESSAGES_SPREE_PERIOD: 'MESSAGES.SPREE_PERIOD',
   MESSAGES_AMOUNT_SPENT: 'MESSAGES.AMOUNT_SPENT',
   MESSAGES_ERRORS_GENERIC: 'MESSAGES.ERRORS.GENERIC',
+  MESSAGES_ERRORS_INVALID_SERVICE: 'MESSAGES.ERRORS.INVALID_SERVICE',
 });
 
 /**
