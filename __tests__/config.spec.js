@@ -1,4 +1,5 @@
-const { getConfig, CONFIG_MAPPER } = require('../src/config');
+import { describe, test, expect } from 'vitest';
+import { getConfig, CONFIG_MAPPER } from '../src/config.js';
 
 describe('config.js', () => {
   describe('CONFIG_MAPPER', () => {

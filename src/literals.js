@@ -1,4 +1,4 @@
-const get = require('lodash/get');
+import get from 'lodash/get.js';
 
 const DICTIONARY = Object.freeze({
   GENERIC: {
@@ -41,7 +41,4 @@ const resolve = (key, ...args) => {
   return args.reduce((accum, value, index) => accum.replace(`{${index}}`, value), literal);
 };
 
-module.exports = {
-  LITERALS_MAPPER,
-  resolve,
-};
+export { LITERALS_MAPPER, resolve };

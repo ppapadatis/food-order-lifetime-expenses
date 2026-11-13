@@ -1,7 +1,7 @@
-const { chain, get, sumBy, filter } = require('lodash');
-const { format } = require('date-fns');
-const { resolve, LITERALS_MAPPER } = require('./literals');
-const { FOOD_SERVICE } = require('./constants');
+import _ from 'lodash';
+import { format } from 'date-fns';
+import { resolve, LITERALS_MAPPER } from './literals.js';
+import { FOOD_SERVICE } from './constants.js';
 
 const ORDER_STATUS = Object.freeze({
   ACCEPTED: 'accepted',
@@ -24,14 +24,14 @@ const transformToGroupedOrders = (
   data,
   { filterFunc, groupBy, idAlias, restaurantAlias, priceAlias, shouldDividePrice = false },
 ) =>
-  chain(data)
+  _.chain(data)
     .filter(filterFunc)
     .groupBy(groupBy)
     .map((group) => ({
-      id: get(group, idAlias, 0),
-      restaurant: get(group, restaurantAlias, ''),
+      id: _.get(group, idAlias, 0),
+      restaurant: _.get(group, restaurantAlias, ''),
       orders: group.length,
-      price: sumBy(group, priceAlias),
+      price: _.sumBy(group, priceAlias),
     }))
     .map((shop) => ({
       ...shop,
@@ -89,14 +89,14 @@ const orderByHigherCost = (service, data) => {
 const getTotalExpenses = (service, data) => {
   switch (service) {
     case FOOD_SERVICE.EFOOD:
-      return sumBy(
-        filter(data, (order) => order?.status === ORDER_STATUS.ACCEPTED),
+      return _.sumBy(
+        _.filter(data, (order) => order?.status === ORDER_STATUS.ACCEPTED),
         'price',
       ).toFixed(2);
     case FOOD_SERVICE.BOX:
       return (
-        sumBy(
-          filter(data, (order) =>
+        _.sumBy(
+          _.filter(data, (order) =>
             Object.values(ORDER_STATUS).includes(order?.shopResponse?.status?.toLowerCase()),
           ),
           'totalPrice',
@@ -104,8 +104,8 @@ const getTotalExpenses = (service, data) => {
       ).toFixed(2);
     case FOOD_SERVICE.WOLT:
       return (
-        sumBy(
-          filter(data, (order) => order?.status?.toLowerCase() === ORDER_STATUS.DELIVERED),
+        _.sumBy(
+          _.filter(data, (order) => order?.status?.toLowerCase() === ORDER_STATUS.DELIVERED),
           'total_price',
         ) / 100
       ).toFixed(2);
@@ -124,18 +124,14 @@ const getTotalExpenses = (service, data) => {
 const getOderDateByIndex = (service, data, index) => {
   switch (service) {
     case FOOD_SERVICE.EFOOD:
-      return get(data, `${index}.submission_date`)?.split(' ')[0];
+      return _.get(data, `${index}.submission_date`)?.split(' ')[0];
     case FOOD_SERVICE.BOX:
-      return get(data, `${index}.createdAt`)?.split('T')[0];
+      return _.get(data, `${index}.createdAt`)?.split('T')[0];
     case FOOD_SERVICE.WOLT:
-      return format(new Date(get(data, `${index}.delivery_time.$date`)), 'yyyy-MM-dd');
+      return format(new Date(_.get(data, `${index}.delivery_time.$date`)), 'yyyy-MM-dd');
     default:
       throw new Error(resolve(LITERALS_MAPPER.MESSAGES_ERRORS_INVALID_SERVICE));
   }
 };
 
-module.exports = {
-  orderByHigherCost,
-  getTotalExpenses,
-  getOderDateByIndex,
-};
+export { orderByHigherCost, getTotalExpenses, getOderDateByIndex };

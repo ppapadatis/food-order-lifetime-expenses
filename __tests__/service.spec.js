@@ -1,5 +1,7 @@
-jest.mock('../src/service.js', () => ({
-  getOrdersFromEfoodAsync: jest.fn(),
+import { describe, test, vi } from 'vitest';
+
+vi.mock('../src/service.js', () => ({
+  getOrdersFromEfoodAsync: vi.fn(),
 }));
 
 describe('service.js', () => {

@@ -19,7 +19,4 @@ const ENDPOINTS = Object.freeze({
   },
 });
 
-module.exports = {
-  FOOD_SERVICE,
-  ENDPOINTS,
-};
+export { FOOD_SERVICE, ENDPOINTS };

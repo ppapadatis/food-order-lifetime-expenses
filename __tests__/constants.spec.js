@@ -1,4 +1,5 @@
-const { ENDPOINTS } = require('../src/constants');
+import { describe, test, expect } from 'vitest';
+import { ENDPOINTS } from '../src/constants.js';
 
 describe('constants.js', () => {
   describe('ENDPOINTS', () => {

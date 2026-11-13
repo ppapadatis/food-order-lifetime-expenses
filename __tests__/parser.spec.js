@@ -1,21 +1,22 @@
-const { parseFoodOrdersAsync } = require('../src/parser');
-const { getOrdersFromEfoodAsync } = require('../src/service');
+import { describe, test, expect, vi, afterEach } from 'vitest';
+import { parseFoodOrdersAsync } from '../src/parser.js';
+import { getOrdersFromEfoodAsync } from '../src/service.js';
 
-jest.mock('../src/service.js', () => ({
-  getOrdersFromEfoodAsync: jest.fn(),
+vi.mock('../src/service.js', () => ({
+  getOrdersFromEfoodAsync: vi.fn(),
 }));
 
 describe('parser.js', () => {
   describe('parseEfoodAsync', () => {
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     test.skip('it should display stats if orders is valid', async () => {});
 
     test('it should exit if orders is empty', async () => {
       getOrdersFromEfoodAsync.mockReturnValue([]);
-      const exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {});
+      const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
       await parseFoodOrdersAsync('efood');
       expect(exitSpy).toHaveBeenCalledWith(0);
     });
