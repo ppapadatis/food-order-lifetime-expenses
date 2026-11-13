@@ -33,12 +33,15 @@ const LITERALS_MAPPER = Object.freeze({
  * @param {string|string[]} args
  * @returns {*}
  */
-const resolve = (key, ...args) => {
-  const literal = get(DICTIONARY, key);
+const resolve = (key: string, ...args: Array<string | number>): string => {
+  const literal: string | undefined = get(DICTIONARY, key);
   if (!literal) return key;
   if (!args.length) return literal;
 
-  return args.reduce((accum, value, index) => accum.replace(`{${index}}`, value), literal);
+  return args.reduce<string>(
+    (accum, value, index) => accum.replace(`{${index}}`, String(value)),
+    literal,
+  );
 };
 
 export { LITERALS_MAPPER, resolve };

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { orderByHigherCost, getTotalExpenses, getOderDateByIndex } from '../src/transformer.js';
+import { orderByHigherCost, getTotalExpenses, getOderDateByIndex } from '../src/transformer.ts';
 
 const data = [
   {

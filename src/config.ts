@@ -17,7 +17,7 @@ const CONFIG_MAPPER = Object.freeze({
  * @param {string} key
  * @returns {*}
  */
-const getConfig = (key) => {
+const getConfig = (key?: string): string | undefined | Record<string, string | undefined> => {
   if (!key) return CONFIG;
   return _.get(CONFIG, key);
 };

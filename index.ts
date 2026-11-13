@@ -1,6 +1,6 @@
 import minimist from 'minimist';
-import { parseFoodOrdersAsync } from './src/parser.js';
-import { FOOD_SERVICE } from './src/constants.js';
+import { parseFoodOrdersAsync } from './src/parser.ts';
+import { FOOD_SERVICE } from './src/constants.ts';
 
 /**
  * Subscribe to unhandledRejection event.

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { resolve, LITERALS_MAPPER } from '../src/literals.js';
+import { resolve, LITERALS_MAPPER } from '../src/literals.ts';
 
 describe('literals.js', () => {
   describe('LITERALS_MAPPER', () => {

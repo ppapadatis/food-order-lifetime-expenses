@@ -1,19 +1,20 @@
 import _ from 'lodash';
-import { resolve, LITERALS_MAPPER } from './literals.js';
-import { getOrdersFromServiceAsync } from './service.js';
-import { orderByHigherCost, getTotalExpenses } from './transformer.js';
-import { printStats } from './printer.js';
+import { resolve, LITERALS_MAPPER } from './literals.ts';
+import { getOrdersFromServiceAsync } from './service.ts';
+import { orderByHigherCost, getTotalExpenses } from './transformer.ts';
+import { printStats } from './printer.ts';
+import type { FoodService } from './types.ts';
 
 /**
  * Prints various information on e-food stats.
  * @param {string} service
  * @returns {Promise<void>}
  */
-const parseFoodOrdersAsync = async (service) => {
+const parseFoodOrdersAsync = async (service: FoodService): Promise<void> => {
   try {
     const orders = await getOrdersFromServiceAsync(service);
 
-    if (_.isEmpty(orders)) {
+    if (!orders || _.isEmpty(orders)) {
       console.log(resolve(LITERALS_MAPPER.GENERIC_NO_ORDERS));
       process.exit(0);
       return;

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { ENDPOINTS } from '../src/constants.js';
+import { ENDPOINTS } from '../src/constants.ts';
 
 describe('constants.js', () => {
   describe('ENDPOINTS', () => {
