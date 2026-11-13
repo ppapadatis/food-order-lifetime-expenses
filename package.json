@@ -29,7 +29,7 @@
     "babel-jest": "29.2.2",
     "jest": "27.4.7",
     "lefthook": "2.2.2",
-    "oxlint": "1.93.0",
-    "prettier": "2.7.1"
+    "oxfmt": "0.78.0",
+    "oxlint": "1.93.0"
   }
 }
