@@ -1,4 +1,5 @@
 import type { Provider } from './types.ts';
+import { asFiniteNumber, asString } from './parse.ts';
 
 export type BoxRawOrder = {
   totalPrice?: number;
@@ -17,13 +18,18 @@ export const box: Provider<BoxRawOrder> = {
       'https://box-client.wavecxm.com/api/orders/get/userlist',
       { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, appId: 'box-web' },
     );
-    return body?.payload?.orders ?? [];
+    const orders = body?.payload?.orders;
+    return Array.isArray(orders) ? orders : [];
   },
-  normalize: (raw) => ({
-    shopId: raw.shop?._id ?? '',
-    shopName: raw.shop?.name ?? '',
-    amountCents: raw.totalPrice ?? 0,
-    counted: COUNTED_STATUSES.has(raw.shopResponse?.status?.toLowerCase() ?? ''),
-    date: raw.createdAt?.split('T')[0] || null,
-  }),
+  normalize: (input) => {
+    // Spreading turns a null raw order into an empty one.
+    const raw: BoxRawOrder = { ...input };
+    return {
+      shopId: raw.shop?._id ?? '',
+      shopName: asString(raw.shop?.name) ?? '',
+      amountCents: Math.round(asFiniteNumber(raw.totalPrice)),
+      counted: COUNTED_STATUSES.has(asString(raw.shopResponse?.status)?.toLowerCase() ?? ''),
+      date: asString(raw.createdAt)?.split('T')[0] || null,
+    };
+  },
 };

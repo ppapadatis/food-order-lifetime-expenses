@@ -22,6 +22,11 @@ describe('box.fetchRaw', () => {
   test('returns an empty list when payload is absent', async () => {
     expect(await box.fetchRaw(fakeHttp({}).http, 'tok')).toEqual([]);
   });
+
+  test('returns an empty list for a null body or non-array orders', async () => {
+    expect(await box.fetchRaw(fakeHttp(null).http, 'tok')).toEqual([]);
+    expect(await box.fetchRaw(fakeHttp({ payload: { orders: { a: 1 } } }).http, 'tok')).toEqual([]);
+  });
 });
 
 describe('box.normalize', () => {
@@ -39,6 +44,28 @@ describe('box.normalize', () => {
 
   test('takes the date part of createdAt', () => {
     expect(box.normalize({ createdAt: '2021-03-04T05:06:07Z' }).date).toBe('2021-03-04');
+  });
+
+  test('ignores numeric status and date', () => {
+    expect(box.normalize({ shopResponse: { status: 1 }, createdAt: 2 } as never)).toMatchObject({
+      counted: false,
+      date: null,
+    });
+  });
+
+  test('gives a default order for a null raw', () => {
+    expect(box.normalize(null as never)).toEqual({
+      shopId: '',
+      shopName: '',
+      amountCents: 0,
+      counted: false,
+      date: null,
+    });
+  });
+
+  test('gives 0 cents for a non-finite or non-number price', () => {
+    expect(box.normalize({ totalPrice: Number.NaN }).amountCents).toBe(0);
+    expect(box.normalize({ totalPrice: '12' } as never).amountCents).toBe(0);
   });
 
   test('reads the shop from shop', () => {

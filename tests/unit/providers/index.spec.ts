@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { PROVIDERS, isProviderId } from '../../../src/providers/index.ts';
+import { PaginationLimitError } from '../../../src/providers/types.ts';
 
 describe('PROVIDERS', () => {
   test('maps each service to its token variable', () => {
@@ -18,5 +19,16 @@ describe('isProviderId', () => {
     expect(isProviderId('nope')).toBe(false);
     expect(isProviderId(true)).toBe(false);
     expect(isProviderId(undefined)).toBe(false);
+    expect(isProviderId('toString')).toBe(false);
   });
+});
+
+test('PROVIDERS is frozen', () => {
+  expect(Object.isFrozen(PROVIDERS)).toBe(true);
+});
+
+test('PaginationLimitError has its name and message', () => {
+  const error = new PaginationLimitError();
+  expect(error.name).toBe('PaginationLimitError');
+  expect(error.message).toBe('Pagination limit reached');
 });

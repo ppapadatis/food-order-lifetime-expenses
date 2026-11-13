@@ -1,6 +1,7 @@
 import type { HttpClient } from '../http/client.ts';
 import { MAX_PAGES, PaginationLimitError } from './types.ts';
 import type { Provider } from './types.ts';
+import { asFiniteNumber, asString } from './parse.ts';
 
 export type EfoodRawOrder = {
   status?: string;
@@ -19,7 +20,8 @@ const fetchRaw = async (http: HttpClient, token: string): Promise<EfoodRawOrder[
     // Each offset depends on the previous page, so pages load in sequence.
     // eslint-disable-next-line no-await-in-loop
     const body = await http.get<EfoodPage>(url, headers);
-    const orders = body?.data?.orders ?? [];
+    const orders = body?.data?.orders;
+    if (!Array.isArray(orders)) return all;
     all.push(...orders);
     if (body?.data?.hasNext !== true || orders.length === 0) return all;
   }
@@ -30,11 +32,15 @@ export const efood: Provider<EfoodRawOrder> = {
   id: 'efood',
   tokenEnv: 'EFOOD_ACCESS_TOKEN',
   fetchRaw,
-  normalize: (raw) => ({
-    shopId: raw.restaurant?.id ?? '',
-    shopName: raw.restaurant?.name ?? '',
-    amountCents: Math.round((raw.price ?? 0) * 100),
-    counted: raw.status?.toLowerCase() === 'accepted',
-    date: raw.submission_date?.split(' ')[0] || null,
-  }),
+  normalize: (input) => {
+    // Spreading turns a null raw order into an empty one.
+    const raw: EfoodRawOrder = { ...input };
+    return {
+      shopId: raw.restaurant?.id ?? '',
+      shopName: asString(raw.restaurant?.name) ?? '',
+      amountCents: Math.round(asFiniteNumber(raw.price) * 100),
+      counted: asString(raw.status)?.toLowerCase() === 'accepted',
+      date: asString(raw.submission_date)?.split(' ')[0] || null,
+    };
+  },
 };

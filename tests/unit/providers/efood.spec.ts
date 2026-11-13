@@ -66,3 +66,42 @@ describe('efood.normalize', () => {
     expect(efood.normalize({ restaurant: { id: 7 } }).shopName).toBe('');
   });
 });
+
+describe('efood malformed input', () => {
+  test.each([[{ a: 1 }], ['abc']])('stops on non-array orders %j', async (bad) => {
+    const { http, get } = fakeHttp(
+      { data: { hasNext: true, orders: [{ id: 'a' }] } },
+      { data: { hasNext: true, orders: bad } },
+    );
+    expect(await efood.fetchRaw(http, 'tok')).toEqual([{ id: 'a' }]);
+    expect(get).toHaveBeenCalledTimes(2);
+  });
+
+  test('stops on a null body', async () => {
+    const { http, get } = fakeHttp(null);
+    expect(await efood.fetchRaw(http, 'tok')).toEqual([]);
+    expect(get).toHaveBeenCalledTimes(1);
+  });
+
+  test('ignores numeric status and date', () => {
+    expect(efood.normalize({ status: 1, submission_date: 2 } as never)).toMatchObject({
+      counted: false,
+      date: null,
+    });
+  });
+
+  test('gives a default order for a null raw', () => {
+    expect(efood.normalize(null as never)).toEqual({
+      shopId: '',
+      shopName: '',
+      amountCents: 0,
+      counted: false,
+      date: null,
+    });
+  });
+
+  test('gives 0 cents for a non-finite or non-number price', () => {
+    expect(efood.normalize({ price: Number.NaN }).amountCents).toBe(0);
+    expect(efood.normalize({ price: '12' } as never).amountCents).toBe(0);
+  });
+});

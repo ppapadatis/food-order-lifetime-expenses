@@ -23,6 +23,12 @@ describe('wolt.fetchRaw', () => {
     ]);
   });
 
+  test('stops on a non-array page', async () => {
+    const get = vi.fn().mockResolvedValueOnce({ a: 1 });
+    expect(await wolt.fetchRaw({ get } as unknown as HttpClient, 'tok')).toEqual([]);
+    expect(get).toHaveBeenCalledTimes(1);
+  });
+
   test('throws PaginationLimitError after 1000 non-empty pages', async () => {
     const get = vi.fn().mockResolvedValue([{}]);
     await expect(wolt.fetchRaw({ get } as unknown as HttpClient, 'tok')).rejects.toThrow(
@@ -55,6 +61,25 @@ describe('wolt.normalize', () => {
     expect(wolt.normalize({ delivery_time: { $date: { $numberLong: '1' } } }).date).toBeNull();
     expect(wolt.normalize({ delivery_time: { $date: null } }).date).toBeNull();
     expect(wolt.normalize({}).date).toBeNull();
+  });
+
+  test('ignores a numeric status', () => {
+    expect(wolt.normalize({ status: 1 } as never).counted).toBe(false);
+  });
+
+  test('gives a default order for a null raw', () => {
+    expect(wolt.normalize(null as never)).toEqual({
+      shopId: '',
+      shopName: '',
+      amountCents: 0,
+      counted: false,
+      date: null,
+    });
+  });
+
+  test('gives 0 cents for a non-finite or non-number price', () => {
+    expect(wolt.normalize({ total_price: Number.NaN }).amountCents).toBe(0);
+    expect(wolt.normalize({ total_price: '12' } as never).amountCents).toBe(0);
   });
 
   test('reads the shop from venue fields', () => {

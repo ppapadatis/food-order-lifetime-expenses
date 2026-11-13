@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import type { HttpClient } from '../http/client.ts';
 import { MAX_PAGES, PaginationLimitError } from './types.ts';
 import type { Provider } from './types.ts';
+import { asFiniteNumber, asString } from './parse.ts';
 
 export type WoltRawOrder = {
   status?: string;
@@ -35,11 +36,15 @@ export const wolt: Provider<WoltRawOrder> = {
   id: 'wolt',
   tokenEnv: 'WOLT_ACCESS_TOKEN',
   fetchRaw,
-  normalize: (raw) => ({
-    shopId: raw.venue_id ?? '',
-    shopName: raw.venue_name ?? '',
-    amountCents: raw.total_price ?? 0,
-    counted: raw.status?.toLowerCase() === 'delivered',
-    date: toDate(raw.delivery_time?.$date),
-  }),
+  normalize: (input) => {
+    // Spreading turns a null raw order into an empty one.
+    const raw: WoltRawOrder = { ...input };
+    return {
+      shopId: raw.venue_id ?? '',
+      shopName: asString(raw.venue_name) ?? '',
+      amountCents: Math.round(asFiniteNumber(raw.total_price)),
+      counted: asString(raw.status)?.toLowerCase() === 'delivered',
+      date: toDate(raw.delivery_time?.$date),
+    };
+  },
 };
