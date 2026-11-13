@@ -15,23 +15,21 @@ and type:
 
 ## Installation
 
-If you have [nvm](https://github.com/nvm-sh/nvm)/[yvm](https://github.com/tophat/yvm) installed, at root level there are `.nvmrc` and `.yvmrc` files which help install the correct versions of node and yarn.  
-
-If you don't, then advise these files to download and install the correct versions.
+Install Node 24.14.0. The version is pinned in `.nvmrc` and `.tool-versions` at root level. Then enable corepack, which provides the pinned pnpm version, and install the dependencies.
 
 ```bash
-  nvm use && yvm use
-  yarn install
+  corepack enable
+  pnpm install
 ```
 
 ## Usage
 
 To calculate total expenses, run the following command
 ```bash
-yarn calculate --service=<efood/box/wolt>
+pnpm calculate --service=<efood/box/wolt>
 ```
 
-If for any reason installation failed, run `yarn clean` and start all over again.
+If for any reason installation failed, run `pnpm clean` and start all over again.
 
 ## Output
 
