@@ -5,3 +5,6 @@ pre-commit:
     oxlint:
       glob: "src/**/*.js"
       run: npx oxlint --quiet {staged_files}
+    oxfmt:
+      glob: "**/*.js"
+      run: npx oxfmt --check {staged_files}
