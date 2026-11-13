@@ -1,7 +1,7 @@
-const axios = require('axios');
-const { isEmpty } = require('lodash');
-const { getConfig, CONFIG_MAPPER } = require('./config');
-const { ENDPOINTS, FOOD_SERVICE } = require('./constants');
+import axios from 'axios';
+import _ from 'lodash';
+import { getConfig, CONFIG_MAPPER } from './config.js';
+import { ENDPOINTS, FOOD_SERVICE } from './constants.js';
 
 const DEFAULT_HEADERS = Object.freeze({
   [FOOD_SERVICE.EFOOD]: {
@@ -83,7 +83,7 @@ const getOrdersFromWoltAsync = async () => {
     const { data } = await axios.get(requestEndpoint, DEFAULT_HEADERS[FOOD_SERVICE.WOLT]);
 
     accountOrders.push(...data);
-    if (!isEmpty(data)) {
+    if (!_.isEmpty(data)) {
       await populateAccountOrdersAsync(offset + data.length);
     }
   };
@@ -107,6 +107,4 @@ const getOrdersFromServiceAsync = async (service) => {
   return (resolveService[service] || resolveService.default)();
 };
 
-module.exports = {
-  getOrdersFromServiceAsync,
-};
+export { getOrdersFromServiceAsync };

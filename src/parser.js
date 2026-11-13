@@ -1,8 +1,8 @@
-const { isEmpty } = require('lodash');
-const { resolve, LITERALS_MAPPER } = require('./literals');
-const { getOrdersFromServiceAsync } = require('./service');
-const { orderByHigherCost, getTotalExpenses } = require('./transformer');
-const { printStats } = require('./printer');
+import _ from 'lodash';
+import { resolve, LITERALS_MAPPER } from './literals.js';
+import { getOrdersFromServiceAsync } from './service.js';
+import { orderByHigherCost, getTotalExpenses } from './transformer.js';
+import { printStats } from './printer.js';
 
 /**
  * Prints various information on e-food stats.
@@ -13,7 +13,7 @@ const parseFoodOrdersAsync = async (service) => {
   try {
     const orders = await getOrdersFromServiceAsync(service);
 
-    if (isEmpty(orders)) {
+    if (_.isEmpty(orders)) {
       console.log(resolve(LITERALS_MAPPER.GENERIC_NO_ORDERS));
       process.exit(0);
       return;
@@ -31,6 +31,4 @@ const parseFoodOrdersAsync = async (service) => {
   process.exit(0);
 };
 
-module.exports = {
-  parseFoodOrdersAsync,
-};
+export { parseFoodOrdersAsync };

@@ -1,4 +1,4 @@
-const { get } = require('lodash');
+import _ from 'lodash';
 
 const CONFIG = Object.freeze({
   EFOOD_ACCESS_TOKEN: process.env.EFOOD_ACCESS_TOKEN,
@@ -19,10 +19,7 @@ const CONFIG_MAPPER = Object.freeze({
  */
 const getConfig = (key) => {
   if (!key) return CONFIG;
-  return get(CONFIG, key);
+  return _.get(CONFIG, key);
 };
 
-module.exports = {
-  getConfig,
-  CONFIG_MAPPER,
-};
+export { getConfig, CONFIG_MAPPER };

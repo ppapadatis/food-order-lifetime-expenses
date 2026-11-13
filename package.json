@@ -4,11 +4,12 @@
   "description": "A simple node script that calculates the total amount spent on food ordering services, based in Greece.",
   "main": "index.js",
   "scripts": {
-    "node:env": "node -r dotenv/config index.js",
+    "node:env": "node --env-file-if-exists=.env index.js",
     "calculate": "pnpm node:env",
     "clean": "rm -rf node_modules",
-    "test": "BABEL_ENV=test jest"
+    "test": "vitest run"
   },
+  "type": "module",
   "author": "Panagiotis Papadatis <ppapadatis@gmail.com>",
   "license": "ISC",
   "repository": {
@@ -23,18 +24,13 @@
   "dependencies": {
     "axios": "1.1.3",
     "date-fns": "2.29.3",
-    "dotenv": "14.3.0",
     "lodash": "4.17.21",
     "minimist": "1.2.7"
   },
   "devDependencies": {
-    "@babel/core": "7.20.2",
-    "@babel/plugin-transform-modules-commonjs": "7.19.6",
-    "@babel/preset-env": "7.20.2",
-    "babel-jest": "29.2.2",
-    "jest": "27.4.7",
     "lefthook": "2.2.2",
     "oxfmt": "0.78.0",
-    "oxlint": "1.93.0"
+    "oxlint": "1.93.0",
+    "vitest": "5.1.0"
   }
 }

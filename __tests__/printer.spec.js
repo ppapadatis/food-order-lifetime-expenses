@@ -1,4 +1,5 @@
-const { printStats } = require('../src/printer');
+import { describe, test, expect, vi } from 'vitest';
+import { printStats } from '../src/printer.js';
 
 describe('printer.js', () => {
   describe('printStats', () => {
@@ -8,7 +9,7 @@ describe('printer.js', () => {
         costs: [{}],
         sum: 1,
       };
-      const log = jest.spyOn(console, 'log');
+      const log = vi.spyOn(console, 'log');
       printStats('efood', data);
       expect(log).toHaveBeenCalledTimes(5);
     });

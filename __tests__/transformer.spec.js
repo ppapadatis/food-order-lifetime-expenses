@@ -1,4 +1,5 @@
-const { orderByHigherCost, getTotalExpenses, getOderDateByIndex } = require('../src/transformer');
+import { describe, test, expect } from 'vitest';
+import { orderByHigherCost, getTotalExpenses, getOderDateByIndex } from '../src/transformer.js';
 
 const data = [
   {

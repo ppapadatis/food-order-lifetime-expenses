@@ -1,5 +1,5 @@
-const { resolve, LITERALS_MAPPER } = require('./literals');
-const { getOderDateByIndex } = require('./transformer');
+import { resolve, LITERALS_MAPPER } from './literals.js';
+import { getOderDateByIndex } from './transformer.js';
 
 /**
  * Prints a variaty of stats in console.
@@ -22,6 +22,4 @@ const printStats = (service, { orders, costs, sum }) => {
   console.log(resolve(LITERALS_MAPPER.MESSAGES_AMOUNT_SPENT, service, sum));
 };
 
-module.exports = {
-  printStats,
-};
+export { printStats };

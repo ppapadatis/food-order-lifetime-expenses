@@ -1,9 +1,7 @@
-jest.mock('../src/service.js', () => ({
-  getOrdersFromEfoodAsync: jest.fn(),
-}));
+import { describe, test } from 'vitest';
 
 describe('service.js', () => {
-  describe('getOrdersFromEfoodAsync', () => {
+  describe('getOrdersFromServiceAsync', () => {
     test.skip('should return data from efood', async () => {});
   });
 });

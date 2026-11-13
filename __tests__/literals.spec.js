@@ -1,4 +1,5 @@
-const { resolve, LITERALS_MAPPER } = require('../src/literals');
+import { describe, test, expect } from 'vitest';
+import { resolve, LITERALS_MAPPER } from '../src/literals.js';
 
 describe('literals.js', () => {
   describe('LITERALS_MAPPER', () => {
