@@ -9,5 +9,5 @@
     "verbatimModuleSyntax": true,
     "types": ["node"]
   },
-  "include": ["index.ts", "src", "__tests__", "vitest.config.ts", "vitest.setup.ts"]
+  "include": ["index.ts", "src", "__tests__", "tests", "vitest.config.ts", "vitest.setup.ts"]
 }
