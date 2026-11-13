@@ -55,6 +55,7 @@
       "ignorePackages",
       {
         "js": "always",
+        "ts": "always",
         "mjs": "never",
         "jsx": "never"
       }

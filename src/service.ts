@@ -1,13 +1,14 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { getConfig, CONFIG_MAPPER } from './config.js';
-import { ENDPOINTS, FOOD_SERVICE } from './constants.js';
+import { getConfig, CONFIG_MAPPER } from './config.ts';
+import { ENDPOINTS, FOOD_SERVICE } from './constants.ts';
+import type { BoxOrder, EfoodOrder, FoodOrder, FoodService, WoltOrder } from './types.ts';
 
 const DEFAULT_HEADERS = Object.freeze({
   [FOOD_SERVICE.EFOOD]: {
     headers: {
       'Content-Type': 'application/json',
-      'x-core-session-id': getConfig(CONFIG_MAPPER.EFOOD_ACCESS_TOKEN),
+      'x-core-session-id': getConfig(CONFIG_MAPPER.EFOOD_ACCESS_TOKEN) as string | undefined,
     },
   },
   [FOOD_SERVICE.BOX]: {
@@ -30,18 +31,21 @@ const DEFAULT_HEADERS = Object.freeze({
  * and will add them to accountOrders.
  * @returns {Array<*>}
  */
-const getOrdersFromEfoodAsync = async () => {
-  const accountOrders = [];
-  const populateAccountOrdersAsync = async (offset = 0) => {
+const getOrdersFromEfoodAsync = async (): Promise<EfoodOrder[]> => {
+  const accountOrders: EfoodOrder[] = [];
+  const populateAccountOrdersAsync = async (offset = 0): Promise<void> => {
     const requestEndpoint = `${ENDPOINTS[FOOD_SERVICE.EFOOD].BASE}/${
       ENDPOINTS[FOOD_SERVICE.EFOOD].ORDERS
-    }`.replace('{{OFST}}', offset);
+    }`.replace('{{OFST}}', String(offset));
 
     const {
       data: {
         data: { hasNext, orders },
       },
-    } = await axios.get(requestEndpoint, DEFAULT_HEADERS[FOOD_SERVICE.EFOOD]);
+    } = await axios.get<{ data: { hasNext: boolean; orders: EfoodOrder[] } }>(
+      requestEndpoint,
+      DEFAULT_HEADERS[FOOD_SERVICE.EFOOD],
+    );
 
     accountOrders.push(...orders);
     if (hasNext) {
@@ -57,12 +61,12 @@ const getOrdersFromEfoodAsync = async () => {
  * Returns all orders for the given user from Box service.
  * @returns {Array<*>}
  */
-const getOrdersFromBoxAsync = async () => {
+const getOrdersFromBoxAsync = async (): Promise<BoxOrder[]> => {
   const {
     data: {
       payload: { orders },
     },
-  } = await axios.get(
+  } = await axios.get<{ payload: { orders: BoxOrder[] } }>(
     `${ENDPOINTS[FOOD_SERVICE.BOX].BASE}/${ENDPOINTS[FOOD_SERVICE.BOX].ORDERS}`,
     DEFAULT_HEADERS[FOOD_SERVICE.BOX],
   );
@@ -73,14 +77,17 @@ const getOrdersFromBoxAsync = async () => {
  * Returns all orders for the given user from Wolt service.
  * @returns {Array<*>}
  */
-const getOrdersFromWoltAsync = async () => {
-  const accountOrders = [];
-  const populateAccountOrdersAsync = async (offset = 0) => {
+const getOrdersFromWoltAsync = async (): Promise<WoltOrder[]> => {
+  const accountOrders: WoltOrder[] = [];
+  const populateAccountOrdersAsync = async (offset = 0): Promise<void> => {
     const requestEndpoint = `${ENDPOINTS[FOOD_SERVICE.WOLT].BASE}/${
       ENDPOINTS[FOOD_SERVICE.WOLT].ORDERS
-    }`.replace('{{OFST}}', offset);
+    }`.replace('{{OFST}}', String(offset));
 
-    const { data } = await axios.get(requestEndpoint, DEFAULT_HEADERS[FOOD_SERVICE.WOLT]);
+    const { data } = await axios.get<WoltOrder[]>(
+      requestEndpoint,
+      DEFAULT_HEADERS[FOOD_SERVICE.WOLT],
+    );
 
     accountOrders.push(...data);
     if (!_.isEmpty(data)) {
@@ -97,12 +104,14 @@ const getOrdersFromWoltAsync = async () => {
  * @param {string} service
  * @returns {Promise<*>}
  */
-const getOrdersFromServiceAsync = async (service) => {
+const getOrdersFromServiceAsync = async (
+  service: FoodService,
+): Promise<FoodOrder[] | undefined> => {
   const resolveService = {
     [FOOD_SERVICE.EFOOD]: getOrdersFromEfoodAsync,
     [FOOD_SERVICE.BOX]: getOrdersFromBoxAsync,
     [FOOD_SERVICE.WOLT]: getOrdersFromWoltAsync,
-    default: () => {},
+    default: () => undefined,
   };
   return (resolveService[service] || resolveService.default)();
 };

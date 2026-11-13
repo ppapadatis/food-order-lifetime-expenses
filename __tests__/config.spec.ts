@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { getConfig, CONFIG_MAPPER } from '../src/config.js';
+import { getConfig, CONFIG_MAPPER } from '../src/config.ts';
 
 describe('config.js', () => {
   describe('CONFIG_MAPPER', () => {

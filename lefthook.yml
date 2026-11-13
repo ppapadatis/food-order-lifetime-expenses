@@ -3,8 +3,8 @@ glob_matcher: doublestar
 pre-commit:
   commands:
     oxlint:
-      glob: "src/**/*.js"
+      glob: "src/**/*.ts"
       run: npx oxlint --quiet {staged_files}
     oxfmt:
-      glob: "**/*.js"
+      glob: "**/*.{js,ts}"
       run: npx oxfmt --check {staged_files}

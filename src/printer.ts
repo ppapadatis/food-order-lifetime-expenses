@@ -1,5 +1,6 @@
-import { resolve, LITERALS_MAPPER } from './literals.js';
-import { getOderDateByIndex } from './transformer.js';
+import { resolve, LITERALS_MAPPER } from './literals.ts';
+import { getOderDateByIndex } from './transformer.ts';
+import type { FoodOrder, FoodService, ShopCost } from './types.ts';
 
 /**
  * Prints a variaty of stats in console.
@@ -8,15 +9,18 @@ import { getOderDateByIndex } from './transformer.js';
  * @param {Array<*>} costs
  * @param {string|number} sum
  */
-const printStats = (service, { orders, costs, sum }) => {
+const printStats = (
+  service: FoodService,
+  { orders, costs, sum }: { orders: FoodOrder[]; costs: ShopCost[]; sum: string },
+): void => {
   console.log(costs);
   console.log(resolve(LITERALS_MAPPER.MESSAGES_TOTAL_SHOPS, costs.length));
   console.log(resolve(LITERALS_MAPPER.MESSAGES_TOTAL_ORDERS, orders.length));
   console.log(
     resolve(
       LITERALS_MAPPER.MESSAGES_SPREE_PERIOD,
-      getOderDateByIndex(service, orders, orders.length - 1),
-      getOderDateByIndex(service, orders, 0),
+      String(getOderDateByIndex(service, orders, orders.length - 1)),
+      String(getOderDateByIndex(service, orders, 0)),
     ),
   );
   console.log(resolve(LITERALS_MAPPER.MESSAGES_AMOUNT_SPENT, service, sum));

@@ -2,7 +2,7 @@ const FOOD_SERVICE = Object.freeze({
   EFOOD: 'efood',
   BOX: 'box',
   WOLT: 'wolt',
-});
+} as const);
 
 const ENDPOINTS = Object.freeze({
   [FOOD_SERVICE.EFOOD]: {
