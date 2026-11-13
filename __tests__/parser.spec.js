@@ -1,8 +1,10 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { parseFoodOrdersAsync } from '../src/parser.js';
 import { getOrdersFromServiceAsync } from '../src/service.js';
+import { printStats } from '../src/printer.js';
 
 vi.mock('../src/service.js');
+vi.mock('../src/printer.js');
 
 describe('parser.js', () => {
   describe('parseFoodOrdersAsync', () => {
@@ -25,6 +27,7 @@ describe('parser.js', () => {
     test('it should exit with 0 if orders is empty', async () => {
       getOrdersFromServiceAsync.mockResolvedValue([]);
       await parseFoodOrdersAsync('efood');
+      expect(printStats).not.toHaveBeenCalled();
       expect(exitSpy).toHaveBeenCalledWith(0);
       expect(exitSpy).not.toHaveBeenCalledWith(1);
       expect(logSpy).toHaveBeenCalledWith('Your order history is empty!');
@@ -34,7 +37,7 @@ describe('parser.js', () => {
       getOrdersFromServiceAsync.mockRejectedValue(new Error('401'));
       await parseFoodOrdersAsync('efood');
       expect(errorSpy).toHaveBeenCalledWith('Oops! Something went wrong!');
-      expect(exitSpy.mock.calls[0][0]).toBe(1);
+      expect(exitSpy).toHaveBeenNthCalledWith(1, 1);
     });
   });
 });
