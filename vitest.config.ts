@@ -5,5 +5,7 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./vitest.setup.ts'],
     clearMocks: true,
+    include: ['tests/**/*.spec.ts'],
+    coverage: { provider: 'v8', include: ['src/**'], thresholds: { lines: 90 } },
   },
 });

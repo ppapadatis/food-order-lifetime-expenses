@@ -1,6 +1,4 @@
-import minimist from 'minimist';
-import { parseFoodOrdersAsync } from './src/parser.ts';
-import { FOOD_SERVICE } from './src/constants.ts';
+import { run } from './src/cli/run.ts';
 
 /**
  * Subscribe to unhandledRejection event.
@@ -21,13 +19,5 @@ process.on('uncaughtException', (error) => {
  * Entry point.
  */
 (async () => {
-  const argv = minimist(process.argv.slice(2));
-  const { service } = argv;
-
-  if (!Object.values(FOOD_SERVICE).includes(service)) {
-    process.exit(1);
-    return;
-  }
-
-  await parseFoodOrdersAsync(service);
+  process.exit(await run(process.argv.slice(2)));
 })();
