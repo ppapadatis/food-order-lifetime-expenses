@@ -1,8 +1,4 @@
-import { describe, test, vi } from 'vitest';
-
-vi.mock('../src/service.js', () => ({
-  getOrdersFromEfoodAsync: vi.fn(),
-}));
+import { describe, test } from 'vitest';
 
 describe('service.js', () => {
   describe('getOrdersFromEfoodAsync', () => {
