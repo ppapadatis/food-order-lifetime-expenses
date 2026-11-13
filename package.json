@@ -32,17 +32,8 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-jest": "27.1.4",
-    "husky": "8.0.1",
     "jest": "27.4.7",
-    "lint-staged": "13.0.3",
+    "lefthook": "2.2.2",
     "prettier": "2.7.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.js": "eslint --quiet"
   }
 }

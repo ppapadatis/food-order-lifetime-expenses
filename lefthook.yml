@@ -1,0 +1,7 @@
+glob_matcher: doublestar
+
+pre-commit:
+  commands:
+    eslint:
+      glob: "src/**/*.js"
+      run: npx eslint --quiet {staged_files}
