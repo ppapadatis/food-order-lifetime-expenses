@@ -10,7 +10,6 @@ const DICTIONARY = Object.freeze({
     AMOUNT_SPENT: 'Total amount spent in {0} is €{1}.',
     ERRORS: {
       GENERIC: 'Oops! Something went wrong!',
-      INVALID_SERVICE: 'Wrong food service entered! Check again your input.',
       MISSING_TOKEN: 'Missing {0}. Add it to your .env file.',
     },
   },
@@ -24,7 +23,6 @@ const LITERALS_MAPPER = Object.freeze({
   MESSAGES_PERIOD_UNKNOWN: 'MESSAGES.PERIOD_UNKNOWN',
   MESSAGES_AMOUNT_SPENT: 'MESSAGES.AMOUNT_SPENT',
   MESSAGES_ERRORS_GENERIC: 'MESSAGES.ERRORS.GENERIC',
-  MESSAGES_ERRORS_INVALID_SERVICE: 'MESSAGES.ERRORS.INVALID_SERVICE',
   MESSAGES_ERRORS_MISSING_TOKEN: 'MESSAGES.ERRORS.MISSING_TOKEN',
 });
 

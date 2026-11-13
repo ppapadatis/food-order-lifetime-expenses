@@ -104,4 +104,8 @@ describe('efood malformed input', () => {
     expect(efood.normalize({ price: Number.NaN }).amountCents).toBe(0);
     expect(efood.normalize({ price: '12' } as never).amountCents).toBe(0);
   });
+
+  test('gives 0 cents when the price in cents overflows', () => {
+    expect(efood.normalize({ price: 1e308 }).amountCents).toBe(0);
+  });
 });

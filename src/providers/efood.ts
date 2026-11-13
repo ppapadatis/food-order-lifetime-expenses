@@ -38,7 +38,7 @@ export const efood: Provider<EfoodRawOrder> = {
     return {
       shopId: raw.restaurant?.id ?? '',
       shopName: asString(raw.restaurant?.name) ?? '',
-      amountCents: Math.round(asFiniteNumber(raw.price) * 100),
+      amountCents: Math.round(asFiniteNumber(asFiniteNumber(raw.price) * 100)),
       counted: asString(raw.status)?.toLowerCase() === 'accepted',
       date: asString(raw.submission_date)?.split(' ')[0] || null,
     };

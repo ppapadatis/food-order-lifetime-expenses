@@ -70,15 +70,16 @@ describe('buildReport', () => {
   });
 
   test('price is euros rounded to two decimals', () => {
-    const report = buildReport([order({ amountCents: 333 }), order({ amountCents: 333 })]);
-    expect(report.shops[0]?.price).toBe(6.66);
+    const report = buildReport([order({ amountCents: 10 }), order({ amountCents: 20 })]);
+    expect(report.shops[0]?.price).toBe(0.3);
   });
 
   test('equal prices keep first-seen order', () => {
     const report = buildReport([
       order({ shopId: 'b', amountCents: 100 }),
+      order({ shopId: 'c', amountCents: 100 }),
       order({ shopId: 'a', amountCents: 100 }),
     ]);
-    expect(report.shops.map((shop) => shop.id)).toEqual(['b', 'a']);
+    expect(report.shops.map((shop) => shop.id)).toEqual(['b', 'c', 'a']);
   });
 });

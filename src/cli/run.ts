@@ -9,13 +9,12 @@ import { parseArgs } from './args.ts';
 import { LITERALS_MAPPER, resolve } from './literals.ts';
 import { printReport } from './output.ts';
 
-type Deps = { http?: HttpClient; env?: Record<string, string | undefined> };
+export type RunDeps = { http?: HttpClient; env?: Record<string, string | undefined> };
 
-export const run = async (argv: string[], deps?: Deps): Promise<number> => {
+export const run = async (argv: string[], deps?: RunDeps): Promise<number> => {
   const id = parseArgs(argv);
   if (id === null) return 1;
-  // Each provider has its own raw type; run only passes raw orders back to normalize.
-  const provider: Provider<unknown> = PROVIDERS[id] as Provider<unknown>;
+  const provider: Provider<unknown> = PROVIDERS[id];
 
   try {
     const token = getToken(provider.tokenEnv, deps?.env ?? process.env);
@@ -28,7 +27,7 @@ export const run = async (argv: string[], deps?: Deps): Promise<number> => {
     return 0;
   } catch (error) {
     if (error instanceof MissingTokenError) {
-      console.error(error.message);
+      console.error(resolve(LITERALS_MAPPER.MESSAGES_ERRORS_MISSING_TOKEN, error.variable));
       return 1;
     }
     console.error(resolve(LITERALS_MAPPER.MESSAGES_ERRORS_GENERIC));

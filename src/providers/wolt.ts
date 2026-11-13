@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import dateFns from 'date-fns';
 import type { HttpClient } from '../http/client.ts';
 import { MAX_PAGES, PaginationLimitError } from './types.ts';
 import type { Provider } from './types.ts';
@@ -29,7 +29,9 @@ const fetchRaw = async (http: HttpClient, token: string): Promise<WoltRawOrder[]
 const toDate = (value: unknown): string | null => {
   if (typeof value !== 'number' && typeof value !== 'string') return null;
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : format(date, 'yyyy-MM-dd');
+  // date-fns 2 is CommonJS, so plain Node cannot load its named exports.
+  // eslint-disable-next-line import/no-named-as-default-member
+  return Number.isNaN(date.getTime()) ? null : dateFns.format(date, 'yyyy-MM-dd');
 };
 
 export const wolt: Provider<WoltRawOrder> = {

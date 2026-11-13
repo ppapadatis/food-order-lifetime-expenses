@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import { format } from 'date-fns';
+import dateFns from 'date-fns';
 import type { HttpClient } from '../../../src/http/client.ts';
 import { wolt } from '../../../src/providers/wolt.ts';
 import { PaginationLimitError } from '../../../src/providers/types.ts';
@@ -50,7 +50,8 @@ describe('wolt.normalize', () => {
 
   test('formats a numeric or string delivery date', () => {
     const ms = Date.UTC(2022, 4, 6, 12);
-    const expected = format(new Date(ms), 'yyyy-MM-dd');
+    // eslint-disable-next-line import/no-named-as-default-member
+    const expected = dateFns.format(new Date(ms), 'yyyy-MM-dd');
     expect(wolt.normalize({ delivery_time: { $date: ms } }).date).toBe(expected);
     expect(wolt.normalize({ delivery_time: { $date: new Date(ms).toISOString() } }).date).toBe(
       expected,
@@ -61,6 +62,10 @@ describe('wolt.normalize', () => {
     expect(wolt.normalize({ delivery_time: { $date: { $numberLong: '1' } } }).date).toBeNull();
     expect(wolt.normalize({ delivery_time: { $date: null } }).date).toBeNull();
     expect(wolt.normalize({}).date).toBeNull();
+  });
+
+  test('gives a null date for an unparseable date string', () => {
+    expect(wolt.normalize({ delivery_time: { $date: 'garbage' } }).date).toBeNull();
   });
 
   test('ignores a numeric status', () => {
