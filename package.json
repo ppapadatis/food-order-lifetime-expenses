@@ -27,13 +27,9 @@
     "@babel/plugin-transform-modules-commonjs": "7.19.6",
     "@babel/preset-env": "7.20.2",
     "babel-jest": "29.2.2",
-    "eslint": "8.2.0",
-    "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.25.2",
-    "eslint-plugin-jest": "27.1.4",
     "jest": "27.4.7",
     "lefthook": "2.2.2",
+    "oxlint": "1.93.0",
     "prettier": "2.7.1"
   }
 }

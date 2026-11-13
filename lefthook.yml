@@ -2,6 +2,6 @@ glob_matcher: doublestar
 
 pre-commit:
   commands:
-    eslint:
+    oxlint:
       glob: "src/**/*.js"
-      run: npx eslint --quiet {staged_files}
+      run: npx oxlint --quiet {staged_files}
