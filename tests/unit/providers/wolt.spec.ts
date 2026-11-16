@@ -68,6 +68,37 @@ describe('wolt.normalize', () => {
     expect(wolt.normalize({ delivery_time: { $date: 'garbage' } }).date).toBeNull();
   });
 
+  test('dates an order by payment_time', () => {
+    const ms = Date.UTC(2022, 4, 6, 12);
+    // eslint-disable-next-line import/no-named-as-default-member
+    const expected = dateFns.format(new Date(ms), 'yyyy-MM-dd');
+    expect(wolt.normalize({ payment_time: { $date: ms } }).date).toBe(expected);
+  });
+
+  test('prefers payment_time over delivery_time', () => {
+    const paid = Date.UTC(2022, 4, 6, 12);
+    // eslint-disable-next-line import/no-named-as-default-member
+    const expected = dateFns.format(new Date(paid), 'yyyy-MM-dd');
+    const raw = { payment_time: { $date: paid }, delivery_time: { $date: Date.UTC(2023, 0, 9) } };
+    expect(wolt.normalize(raw).date).toBe(expected);
+  });
+
+  test('falls back to delivery_time for an unusable payment_time', () => {
+    const ms = Date.UTC(2022, 4, 6, 12);
+    // eslint-disable-next-line import/no-named-as-default-member
+    const expected = dateFns.format(new Date(ms), 'yyyy-MM-dd');
+    const delivery_time = { $date: ms };
+    expect(wolt.normalize({ payment_time: { $date: 'garbage' }, delivery_time }).date).toBe(
+      expected,
+    );
+  });
+
+  test('gives a null date when both dates are unusable', () => {
+    expect(
+      wolt.normalize({ payment_time: { $date: 'garbage' }, delivery_time: { $date: null } }).date,
+    ).toBeNull();
+  });
+
   test('ignores a numeric status', () => {
     expect(wolt.normalize({ status: 1 } as never).counted).toBe(false);
   });

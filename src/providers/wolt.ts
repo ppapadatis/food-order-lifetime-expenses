@@ -9,6 +9,7 @@ export type WoltRawOrder = {
   total_price?: number;
   venue_id?: string;
   venue_name?: string;
+  payment_time?: { $date?: unknown };
   delivery_time?: { $date?: unknown };
 };
 
@@ -46,7 +47,7 @@ export const wolt: Provider<WoltRawOrder> = {
       shopName: asString(raw.venue_name) ?? '',
       amountCents: Math.round(asFiniteNumber(raw.total_price)),
       counted: asString(raw.status)?.toLowerCase() === 'delivered',
-      date: toDate(raw.delivery_time?.$date),
+      date: toDate(raw.payment_time?.$date) ?? toDate(raw.delivery_time?.$date),
     };
   },
 };
