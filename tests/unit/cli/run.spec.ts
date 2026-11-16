@@ -71,4 +71,16 @@ describe('run', () => {
     expect(lines.some((line) => line.endsWith(`(HTTP ${status})`))).toBe(true);
     expect(JSON.stringify(error.mock.calls)).not.toContain('SECRET');
   });
+
+  test.each([
+    [418, 'box rejected the app version. Update BOX_APP_VERSION in src/providers/box.ts.'],
+    [401, 'The box token expired. Box tokens last 15 minutes. Copy a fresh token.'],
+  ])('explains a box HTTP %i', async (status, message) => {
+    const get = vi.fn().mockRejectedValue(axiosError(status));
+    const env = { ...ENV, BOX_ACCESS_TOKEN: 'BOXTOKEN' };
+    expect(await run(['--service=box'], { http: { get }, env })).toBe(1);
+    expect(error.mock.calls).toEqual([['Oops! Something went wrong!'], [message]]);
+    expect(log).not.toHaveBeenCalled();
+    expect(JSON.stringify(error.mock.calls)).not.toMatch(/SECRET|BOXTOKEN/);
+  });
 });

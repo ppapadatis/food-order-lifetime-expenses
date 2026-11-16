@@ -31,6 +31,14 @@ pnpm calculate --service=<efood/box/wolt>
 
 If for any reason installation failed, run `pnpm clean` and start all over again.
 
+## Troubleshooting box
+
+The script reads box orders from `https://consumer.box.gr`. This host is internal to the box web app. Box can change it without notice.
+
+A box token lasts 15 minutes. If the script tells you that the token expired, copy a fresh token from box.gr and run the script again.
+
+Box rejects old app versions with HTTP 418. If the script tells you that box rejected the app version, set `BOX_APP_VERSION` in `src/providers/box.ts` to the current version of the box web app.
+
 ## Output
 
 ```bash

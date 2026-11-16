@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from 'vitest';
 import type { HttpClient } from '../../../src/http/client.ts';
-import { box } from '../../../src/providers/box.ts';
+import { box, BOX_APP_VERSION } from '../../../src/providers/box.ts';
 
 const fakeHttp = (body: unknown) => {
   const get = vi.fn().mockResolvedValueOnce(body);
@@ -13,8 +13,13 @@ describe('box.fetchRaw', () => {
     expect(await box.fetchRaw(http, 'tok')).toEqual([{ totalPrice: 1 }]);
     expect(get.mock.calls).toEqual([
       [
-        'https://box-client.wavecxm.com/api/orders/get/userlist',
-        { 'Content-Type': 'application/json', Authorization: 'Bearer tok', appId: 'box-web' },
+        'https://consumer.box.gr/api/orders/get/userlist',
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer tok',
+          appId: 'box-web',
+          'app-version': BOX_APP_VERSION,
+        },
       ],
     ]);
   });
