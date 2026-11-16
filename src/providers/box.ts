@@ -16,7 +16,7 @@ export const BOX_APP_VERSION = '8.6.4';
 
 const STATUS_MESSAGES: Record<number, string> = {
   418: 'box rejected the app version. Update BOX_APP_VERSION in src/providers/box.ts.',
-  401: 'The box token expired. Box tokens last 15 minutes. Copy a fresh token.',
+  401: 'The box token expired or is invalid. Box tokens last 15 minutes. Copy a fresh token.',
 };
 
 export const box: Provider<BoxRawOrder> = {
